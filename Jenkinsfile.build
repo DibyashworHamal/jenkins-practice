@@ -4,7 +4,7 @@ pipeline {
         stage('compile'){
             steps{
                 echo 'compiling code'
-                sh 'mvn cleancompile -f java-app/pom.xml'
+                sh 'mvn clean compile -f java-app/pom.xml'
             }
         }
         stage('unit test'){
