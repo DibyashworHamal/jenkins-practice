@@ -2,6 +2,10 @@ pipeline {
 
     agent any
 
+    environment {
+        TOMCAT_URL = 'http://localhost:8081'
+    }
+
     stages {
 
         stage('Copy Artifact') {
@@ -26,11 +30,13 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                sh '''
-                curl -u tomcat:tomcat123 \
-                -T java-app/target/java-app.war \
-                "http://localhost:8081/manager/text/deploy?path=/java-app&update=true"
-                '''
+                withCredentials([usernamePassword(credentialsId: 'tomcatcred', passwordVariable: 'TOMCAT_PASSWORD', usernameVariable: 'TOMCAT_USERNAME')]) {
+                    sh '''
+                    curl -u $TOMCAT_USERNAME:$TOMCAT_PASSWORD \
+                    -T java-app/target/java-app.war \
+                    "$TOMCAT_URL/manager/text/deploy?path=/java-app&update=true"
+                    '''
+                }
             }
         }
 
