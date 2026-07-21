@@ -1,0 +1,11 @@
+pipeline {
+    agent any
+    stages{
+        stage('compile'){
+            steps{
+                echo 'compiling code'
+                sh 'mvn compile -f java-app/pom.xml'
+            }
+        }
+    }
+}
