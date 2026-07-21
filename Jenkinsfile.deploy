@@ -17,22 +17,21 @@ pipeline {
 
         }
 
-        stage('Deploy') {
-
+        stage('Check Artifact') {
             steps {
-
-                sh '''
-
-                curl -u tomcat:tomcat123 \
-
-                -T java-app/target/java-app.war \
-
-                "http://54.159.201.9:8081/manager/text/deploy?path=/java-app&update=true"
-
-                '''
-
+                sh 'pwd'
+                sh 'find . -name "*.war"'
             }
+        }
 
+        stage('Deploy') {
+            steps {
+                sh '''
+                curl -u tomcat:tomcat123 \
+                -T java-app/target/java-app.war \
+                "http://localhost:8081/manager/text/deploy?path=/java-app&update=true"
+                '''
+            }
         }
 
     }
