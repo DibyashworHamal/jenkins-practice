@@ -1,0 +1,39 @@
+pipeline {
+
+    agent any
+
+    stages {
+
+        stage('Copy Artifact') {
+
+            steps {
+
+                copyArtifacts(
+                    projectName: 'java-maven-app',
+                    selector: lastSuccessful()
+                )
+
+            }
+
+        }
+
+        stage('Deploy') {
+
+            steps {
+
+                sh '''
+
+                curl -u tomcat:tomcat123 \
+
+                -T java-app/target/java-app.war \
+
+                "http://54.159.201.9:8081/manager/text/deploy?path=/java-app&update=true"
+
+                '''
+
+            }
+
+        }
+
+    }
+}

@@ -4,7 +4,7 @@ pipeline {
         stage('compile'){
             steps{
                 echo 'compiling code'
-                sh 'mvn compile -f java-app/pom.xml'
+                sh 'mvn cleancompile -f java-app/pom.xml'
             }
         }
         stage('unit test'){
@@ -20,7 +20,7 @@ pipeline {
             }
             post{
                 success{
-                    archiveArtifacts artifacts: '*/*/*.war', followSymlinks: false, onlyIfSuccessful: true
+                    archiveArtifacts artifacts: 'java-app/target/*.war', followSymlinks: false, onlyIfSuccessful: true
                 }
             }
         }
